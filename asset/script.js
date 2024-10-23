@@ -83,9 +83,9 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
       var totalDuration = 5000; // 총 지속 시간을 변수로 설정 (ms)
       var progressWidth = 800; // 프로그레스 바의 너비
 
-      $W("r$progressMake").sizeTo(progressWidth, 40, {
-        timing: "linear " + totalDuration + "ms", // 변수에 따라 애니메이션 시간 조정
-      });
+    //   $W("r$progressMake").sizeTo(progressWidth, 40, {
+    //     timing: "linear " + totalDuration + "ms", // 변수에 따라 애니메이션 시간 조정
+    //   });
 
       var loadingVal = 0;
       var interval = 20; // 20ms마다 값을 업데이트 (값이 너무 작으면 애니메이션이 끊길 수 있음)
@@ -106,6 +106,8 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
         // 백분율로 변환 (0 ~ 800 범위에서 100%로 변환)
         var percentage = Math.floor((loadingVal / maxValue) * 100);
         $W("t$loading").set("text", percentage + "%"); // 백분율 텍스트 업데이트
+        // Todo ... width 800까지 실행
+        $W("r$progressMake").set("w",loadingVal);
       }, interval);
     };
 
@@ -275,6 +277,7 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
       });
 
       qrCode.append(document.getElementById("qrcode"));
+      console.log(document.getElementById("qrcode"));
 
       window
         .html2canvas(document.querySelector("#dropArea"), {
