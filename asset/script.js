@@ -44,6 +44,7 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
       stopBlink($W("i$effect_3"));
       blinkZoom($W("i$green"), 1000, { timing: "ease-in-out 1000ms" });
       $W("mlc$main").changeState("Layer2");
+      $W("a$click").changeState("Play");
     };
 
     /**
@@ -52,6 +53,7 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
     var onNextPage2 = function () {
       stopBlink($W("i$green"));
       $W("mlc$main").changeState("Layer3");
+      $W("a$click").changeState("Play");
     };
 
     /**
@@ -62,6 +64,7 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
         $W("it$input").run("focus", true);
       }, 500);
       $W("mlc$main").changeState("Layer4");
+      $W("a$click").changeState("Play");
     };
 
     /**
@@ -70,6 +73,7 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
     var onNextPage4 = function () {
       opacityBlink($W("mt$centerMsg"), 500, { timing: "ease-in-out 500ms" });
       $W("mlc$main").changeState("Layer5");
+      $W("a$click").changeState("Play");
     };
 
     /**
@@ -89,6 +93,8 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
       var steps = totalDuration / interval; // 총 실행할 스텝 수
       var increment = maxValue / steps; // 각 스텝마다 증가할 값 계산
 
+      $W("a$loading").changeState("Play");
+
       var intervalId = setInterval(function () {
         loadingVal += increment;
         if (loadingVal >= maxValue + 1) {
@@ -98,6 +104,7 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
           blink($W("i$effect_4"), 2000, { timing: "ease-in-out 2000ms" });
           blink($W("i$effect_5"), 1000, { timing: "ease-in-out 1000ms" });
           blink($W("i$effect_6"), 1500, { timing: "ease-in-out 1500ms" });
+          $W("a$loading").changeState("Stop");
         }
         // 백분율로 변환 (0 ~ 800 범위에서 100%로 변환)
         var percentage = Math.floor((loadingVal / maxValue) * 100);
@@ -118,6 +125,7 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
       });
       set("$clone:data", newData);
       setProgress();
+      $W("a$click").changeState("Play");
     };
 
     /**
@@ -132,6 +140,7 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
       );
       centerMsg.set("visibility", "hidden");
       stopBlink(centerMsg);
+      $W("a$click").changeState("Play");
     };
 
     /**
@@ -197,6 +206,7 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
     var setOopsText = function () {
       var oopsText = $W("mlc$oopsText");
       var oopsVal = get("$clone:data").length;
+      
       if (oopsVal > 0) {
         if (oopsVal >= 1 && oopsVal <= 3) {
           oopsText.changeState("Layer2");
@@ -238,12 +248,27 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
      */
     var onStateChangeOopsText = function () {
       var target = Event.target;
+      var popup = $W("mlc$popup");
+      var popupImg = $W("i$popup");
       target.zoomTo(120, 120, {
         timing: "linear 300ms",
         onEnd: function () {
           target.zoomTo(100, 100, { timing: "linear 300ms" });
         },
       });
+      if(target.get("state") == "Layer4") {
+        popup.zIndexTo("Top");
+        popup.moveTo(0, 0);
+        popupImg.zoomTo(120, 120, {
+        timing: "linear 300ms",
+        onEnd: function () {
+          popupImg.zoomTo(100, 100, { timing: "linear 300ms" });
+        },
+        });
+        setTimeout(function(){
+          popup.moveTo(1080, 0);
+        }, 2000);
+      }
     };
 
     /**
@@ -403,6 +428,7 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
         if (label == "r$button") {
           onClickButton();
         } else if (label == "b$home") {
+          $W("a$click").changeState("Play");
           reset();
         } else if (label == "b$next_1") {
           onNextPage1();
