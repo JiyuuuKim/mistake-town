@@ -268,6 +268,7 @@ apx.addEventListener("pageBubble", function (Event, ctx) {
         setTimeout(function(){
           popup.moveTo(1080, 0);
         }, 2000);
+        $W("a$megaoops").changeState("Play");
       }
     };
 
